@@ -1,10 +1,11 @@
 <?php
-/**	APPLICATION:	Framework
-*	FILE:			model.php
-*	DESCRIPTION:	library - Model class to use as starter of any class
-*					all classes should be named as NameSome and the file as nameSome.php casesensitive
-*	CREATED:		1 May 2013 by Diana De vargas
-*	UPDATED:									
+/**    
+*    APPLICATION:    Framework
+*    FILE:            model.php
+*    DESCRIPTION:    library - Model class to use as starter of any class
+*                    all classes should be named as NameSome and the file as nameSome.php casesensitive
+*    CREATED:        1 May 2013 by Diana De vargas
+*    UPDATED:                                    
 */
 
 abstract class Model
@@ -14,11 +15,7 @@ abstract class Model
     protected static $log = '';
 
     /**
-     * constructor : reads the config file an set up the variables
-     *
-     * @param string $file file name
-     * @param string $enviroment name of enviroment to read variables
-     *
+     * constructor : should be protected
      * @return void
      */
     protected function __construct()
@@ -27,7 +24,7 @@ abstract class Model
 
     public static function getInstance() 
     {
-    	$class = get_called_class();
+        $class = get_called_class();
         return new $class();
     }
     
@@ -65,9 +62,10 @@ abstract class Model
      */
     public function __isset($property)
     {
-       if (isset($this->$property)) {
+       if (($property[0] !== '_') && isset($this->$property)) {
            return true;
        }
+       return false;
     }
 
     /**
@@ -85,9 +83,9 @@ abstract class Model
         if(method_exists($this, $methodName)) {
             $value = call_user_func(array($this, $methodName));
         } else {
-        	if (isset($this->$property)) {
-        		$value = $this->$property;
-        	}
+            if (($property[0] !== '_') && isset($this->$property)) {
+                $value = $this->$property;
+            }
         }
 
         return $value;
@@ -161,7 +159,7 @@ abstract class Model
             self::$microtime_start = $microtime_end;
         }
     }
-	
+    
     public static function resetCssCounter($i=1)
     {
         self::$css_count = is_numeric($i)?$i:1;
@@ -178,9 +176,9 @@ abstract class Model
      * @return void
      */
     public function printMe() {
-		echo '<br />';
-		echo '<pre>';
-		print_r ($this);
-		echo '</pre>';
+        echo '<br />';
+        echo '<pre>';
+        print_r ($this);
+        echo '</pre>';
     }
 }

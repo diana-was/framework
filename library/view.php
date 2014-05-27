@@ -30,6 +30,7 @@ class View extends Model
             $this->_Path = $modulePath;
         }
     }
+    
     /**
      * Display a view
      *

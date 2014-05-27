@@ -49,8 +49,8 @@ else if($pid){
 else{
     //the main process
     while(true){
-        file_put_contents($log, 'Running...', FILE_APPEND);
-        sleep(1);
+        file_put_contents($log, 'Heart beat ...', FILE_APPEND);
+        sleep(10000);
     }//end while
 }//end if
  

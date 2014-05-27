@@ -2,6 +2,6 @@ DirectoryIndex index.html
 Options +FollowSymlinks
 RewriteEngine on
 RewriteRule ^sitemap\.xml$ sitemap.php [L]
-RewriteRule !\.(js|gif|png|jpg|css|swf|xml|pdf|exe|cab)$ application/bootstrap.php [L]
+RewriteRule !\.(js|gif|png|jpg|css|swf|xml|pdf|exe|cab)$ index.php [L]
 #RewriteCond %{REQUEST_FILENAME} !-f
 #RewriteCond %{REQUEST_FILENAME} !-d

@@ -1,32 +1,20 @@
-<!--
-To change this template, choose Tools | Templates
-and open the template in the editor.
--->
 <!DOCTYPE html>
-<html>
-    <head>
-        <title></title>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <style>
-            table, td, th
-            {
-                border:1px solid blue;
-            }
-            th
-            {
-                background-color:blue;
-                color:white;
-            }
-            td, th
-            {
-                padding: 4px;
-            }
-        </style>
-    </head>
-    <body>
-        <div>
-            <?php foreach ($Tools->tables as $name => $data) : ?>
-            <h2><?php echo $name; ?></h2>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Example Website</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="<?php echo PUBLIC_URL; ?>css/basic.css">
+    <script src="<?php echo PUBLIC_URL; ?>js/vendor/jquery.min.js"></script>
+</head>
+<body>
+    <section>
+        <div class="center">
+            <h1>Database Structure</h1>
+            <?php foreach ($Example->tables as $name => $data) : ?>
+            <h2><a href="<?php echo PUBLIC_URL."example/showRows?{$name}"; ?>"><?php echo $name; ?></a></h2>
             <table style="border">
                 <?php foreach ($data['fields'] as $n => $row) : 
                         if ($n == 0) {
@@ -54,5 +42,6 @@ and open the template in the editor.
             </table>
             <?php endforeach; ?>
         </div>
-    </body>
+    </section>
+</body>
 </html>

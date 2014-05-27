@@ -1,10 +1,10 @@
 <?php
-/**	APPLICATION:	Framework
-*	FILE:			model.php
-*	DESCRIPTION:	library - Model class to use as starter of any class
-*					all classes should be named as NameSome and the file as nameSome.php casesensitive
-*	CREATED:		1 May 2013 by Diana De vargas
-*	UPDATED:									
+/**    APPLICATION:    Framework
+*    FILE:            model.php
+*    DESCRIPTION:    library - Model class to use as starter of any class
+*                    all classes should be named as NameSome and the file as nameSome.php casesensitive
+*    CREATED:        1 May 2013 by Diana De vargas
+*    UPDATED:                                    
 */
 
 abstract class ControllerModel extends Model
@@ -13,11 +13,7 @@ abstract class ControllerModel extends Model
     public    $pageTitle;
 
     /**
-     * constructor : reads the config file an set up the variables
-     *
-     * @param string $file file name
-     * @param string $enviroment name of enviroment to read variables
-     *
+     * constructor : adds the view object 
      * @return void
      */
     protected function __construct()
@@ -28,16 +24,16 @@ abstract class ControllerModel extends Model
 
     /**
     * Abstarct functions
-    *    * 
+    *   
     */
-    abstract function index();
+    abstract public function index();
 
     /**
     * function to call methods by URL
     *
     * @return mixed
     */
-    final public function call ($method_name, $parameter = array())
+    final private function call ($method_name, $parameter = array())
     {
         $class = get_class($this); 
         if (!empty($method_name) && method_exists($class,$method_name))
@@ -46,16 +42,16 @@ abstract class ControllerModel extends Model
         }
         else
         {
-        	// Dont call index again avoid loops
-	    	$callers=debug_backtrace(false,0);
-	    	$trace = array();
-			foreach($callers as $call) {
-				if (isset($call['class']) && ($call['class'] == $class) && ($call['function'] == 'index'))
-				{
-					$this->viewHTML('404.html');
-	    			return false;
-				}
-			}
+            // Dont call index again avoid loops
+            $callers=debug_backtrace(false);
+            $trace = array();
+            foreach($callers as $call) {
+                if (isset($call['class']) && ($call['class'] == $class) && ($call['function'] == 'index'))
+                {
+                    $this->viewHTML('404.html');
+                    return false;
+                }
+            }
             return call_user_func_array(array($this, 'index'), $parameter);
         }
     }

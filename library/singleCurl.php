@@ -1,13 +1,14 @@
 <?php
-/*	APPLICATION:	Framework
-	FILE:			singleCurl.php
-	DESCRIPTION:	library - Class to connect via Curl 
-	CREATED:		1 May 2013 by Diana De vargas
-	UPDATED:									
-*/
+/*    
+ *  APPLICATION:    Framework
+ *  FILE:           singleCurl.php
+ *  DESCRIPTION:    library - Class to connect via Curl 
+ *  CREATED:        1 May 2013 by Diana De vargas
+ *  UPDATED:                                    
+ */
 
 /**
- *	Single curl (sequential)
+ *    Single curl (sequential)
  *
  */
  class SingleCurl  extends  Model
@@ -65,28 +66,28 @@
      */
      protected function __construct($url='',$timeOut = 5,$acceptType='text/html',$verb='GET',$includeHeader = false, $followlocation = true,$maxRedirecs = 4,$binaryTransfer = false,$noBody = false)
      {
-		$this->_url 			= $url;
-		$this->_followlocation 	= $followlocation;
-		$this->_timeout 		= $timeOut;
-		$this->_maxRedirects	= $maxRedirecs;
-		$this->_noBody 			= $noBody;
-		$this->_includeHeader 	= $includeHeader;
-		$this->_binaryTransfer 	= $binaryTransfer;
+        $this->_url             = $url;
+        $this->_followlocation     = $followlocation;
+        $this->_timeout         = $timeOut;
+        $this->_maxRedirects    = $maxRedirecs;
+        $this->_noBody             = $noBody;
+        $this->_includeHeader     = $includeHeader;
+        $this->_binaryTransfer     = $binaryTransfer;
 
-		$this->_verb			= $verb;
-		$this->_requestBody		= null;
-		$this->_acceptType		= strtolower($acceptType);
-		$this->_responseInfo	= null;
-		$config = Config::getInstance();
-		$this->_cookieFileLocation = $config->cokieFile;
-		$this->_proxy = is_array($config->proxy)?$config->proxy:array();
+        $this->_verb            = $verb;
+        $this->_requestBody        = null;
+        $this->_acceptType        = strtolower($acceptType);
+        $this->_responseInfo    = null;
+        $config = Config::getInstance();
+        $this->_cookieFileLocation = $config->cokieFile;
+        $this->_proxy = is_array($config->proxy)?$config->proxy:array();
      }
 
-    public static function getInstance($url='',$timeOut = 5,$acceptType='text/html',$verb='GET',$includeHeader = false, $followlocation = true,$maxRedirecs = 4,$binaryTransfer = false,$noBody = false) 
-    {
-    	$class = get_called_class();
+     public static function getInstance($url='',$timeOut = 5,$acceptType='text/html',$verb='GET',$includeHeader = false, $followlocation = true,$maxRedirecs = 4,$binaryTransfer = false,$noBody = false) 
+     {
+        $class = get_called_class();
         return new $class($url, $timeOut, $acceptType, $verb, $includeHeader, $followlocation, $maxRedirecs, $binaryTransfer, $noBody);
-    }
+     }
      
     /**
      * buildPostBody serializa the array and Generate URL-encoded query string
@@ -97,18 +98,18 @@
      * @return string
      */
      public function buildPostBody ($data = null,$glue='')
-	{
-		$data = ($data !== null) ? $data : array();
-		if (!is_array($data))
-		{
-			throw new InvalidArgumentException('Invalid data input for postBody.  Array expected');
-		}
-		$data = ((count($data)==1) && isset($data[0]))?$data[0]:$data; // clean up extra level
-		$data = (count($data)>0)?$glue.http_build_query($data, '', '&'):'';
-		return $data;
-	}
+    {
+        $data = ($data !== null) ? $data : array();
+        if (!is_array($data))
+        {
+            throw new InvalidArgumentException('Invalid data input for postBody.  Array expected');
+        }
+        $data = ((count($data)==1) && isset($data[0]))?$data[0]:$data; // clean up extra level
+        $data = (count($data)>0)?$glue.http_build_query($data, '', '&'):'';
+        return $data;
+    }
      
-	     
+         
     /**
      * buildPostFields clean array 
      *
@@ -117,23 +118,23 @@
      * @return array
      */
      public function buildPostFields ($data = null,$glue='')
-	{
-		$data = ($data !== null) ? $data : array();
-		if (!is_array($data))
-		{
-			throw new InvalidArgumentException('Invalid data input for postBody.  Array expected');
-		}
-		$data = ((count($data)==1) && isset($data[0]))?$data[0]:$data; // clean up extra level
-		$data = (count($data)>0)?$data:'';
-		return $data;
-	}
+    {
+        $data = ($data !== null) ? $data : array();
+        if (!is_array($data))
+        {
+            throw new InvalidArgumentException('Invalid data input for postBody.  Array expected');
+        }
+        $data = ((count($data)==1) && isset($data[0]))?$data[0]:$data; // clean up extra level
+        $data = (count($data)>0)?$data:'';
+        return $data;
+    }
      
-	     
-	public function setReferer($use){
+         
+    public function setReferer($use){
        $this->_referer = $use;
     }
     
-	public function resetReferer(){
+    public function resetReferer(){
        $this->_referer = "http://www.google.com";;
     }
     /**
@@ -143,7 +144,7 @@
      *
      * @return void
      */
-	public function useAuth($use){
+    public function useAuth($use){
        $this->authentication = ($use == true)?1:0;
      }
 
@@ -192,8 +193,8 @@
      */
      public function setPost ($requestBody)
      {
-     	if ($requestBody == null)
-     		$requestBody = array();
+         if ($requestBody == null)
+             $requestBody = array();
         $this->_post = true;
         $this->_postFields = $this->buildPostFields($requestBody);
      }
@@ -208,8 +209,8 @@
      public function setGet ($requestBody)
      {
         $this->_post = false;
-		$this->_url .= $this->buildPostBody($requestBody,'?');
-		$this->opt(CURLOPT_HTTPGET		, true);
+        $this->_url .= $this->buildPostBody($requestBody,'?');
+        $this->opt(CURLOPT_HTTPGET        , true);
      }
 
     /**
@@ -222,17 +223,17 @@
      public function setPut ($requestBody)
      {
         $this->_post = true;
-		$data = $this->buildPostBody($requestBody);
-		$this->_requestLength = strlen($data);
-		//$fh = fopen('output', 'w+');
-		$fh = tmpfile();
-		fwrite($fh, $data);
-		rewind($fh);
+        $data = $this->buildPostBody($requestBody);
+        $this->_requestLength = strlen($data);
+        //$fh = fopen('output', 'w+');
+        $fh = tmpfile();
+        fwrite($fh, $data);
+        rewind($fh);
 
-		$this->opt(CURLOPT_INFILE		, $fh);
-		$this->opt(CURLOPT_INFILESIZE	, $this->_requestLength);
-		$this->opt(CURLOPT_PUT			, true);
-		return $fh;
+        $this->opt(CURLOPT_INFILE        , $fh);
+        $this->opt(CURLOPT_INFILESIZE    , $this->_requestLength);
+        $this->opt(CURLOPT_PUT            , true);
+        return $fh;
      }
 
     /**
@@ -244,9 +245,9 @@
      */
      public function setDelete ($requestBody)
      {
-		$this->_post = false;
-		$this->_url .= $this->buildPostBody($requestBody,'?');
-		$this->opt(CURLOPT_CUSTOMREQUEST, 'DELETE');  
+        $this->_post = false;
+        $this->_url .= $this->buildPostBody($requestBody,'?');
+        $this->opt(CURLOPT_CUSTOMREQUEST, 'DELETE');  
      }
 
      
@@ -260,18 +261,18 @@
      public function setVerify ($requestBody)
      {
         $this->_post = true;
-		$data = $this->buildPostBody($requestBody);
-		$this->_requestLength = strlen($data);
-		//$fh = fopen('output', 'w+');
-		$fh = tmpfile();
-		fwrite($fh, $data);
-		rewind($fh);
+        $data = $this->buildPostBody($requestBody);
+        $this->_requestLength = strlen($data);
+        //$fh = fopen('output', 'w+');
+        $fh = tmpfile();
+        fwrite($fh, $data);
+        rewind($fh);
 
-		$this->opt(CURLOPT_INFILE		, $fh);
-		$this->opt(CURLOPT_INFILESIZE	, $this->_requestLength);
-		$this->opt(CURLOPT_PUT			, true);
-		$this->opt(CURLOPT_CUSTOMREQUEST, 'VERIFY'); 
-		return $fh;
+        $this->opt(CURLOPT_INFILE        , $fh);
+        $this->opt(CURLOPT_INFILESIZE    , $this->_requestLength);
+        $this->opt(CURLOPT_PUT            , true);
+        $this->opt(CURLOPT_CUSTOMREQUEST, 'VERIFY'); 
+        return $fh;
      }
 
      /**
@@ -282,25 +283,25 @@
      * @return void
      */
      public function setAjax( $blnValue ){
-		$this->_includeHeader = true;
-		$this->_isAjax = $blnValue;
-	}
+        $this->_includeHeader = true;
+        $this->_isAjax = $blnValue;
+    }
 
     /**
      * setAuth set the options CURLOPT_HTTPAUTH and CURLOPT_USERPWD with the values of the auth name and password is the authentication variable is true
      *
      * @return void
      */
-	protected function setAuth ()
-	{
-		if ($this->authentication && $this->auth_name !== null && $this->auth_pass !== null)
-		{
-			$this->useAuth(true);
-			$this->opt(CURLOPT_HTTPAUTH, CURLAUTH_DIGEST);
-			$this->opt(CURLOPT_USERPWD, $this->auth_name . ':' . $this->auth_pass);
-		}
-	}
-		
+    protected function setAuth ()
+    {
+        if ($this->authentication && $this->auth_name !== null && $this->auth_pass !== null)
+        {
+            $this->useAuth(true);
+            $this->opt(CURLOPT_HTTPAUTH, CURLAUTH_DIGEST);
+            $this->opt(CURLOPT_USERPWD, $this->auth_name . ':' . $this->auth_pass);
+        }
+    }
+        
     /**
      * Insert in the array opt the $option key and the $value
      *
@@ -309,11 +310,11 @@
      *
      * @return void
      */
-	public function opt($option, $value)
-	{
-		$this->options[$option] = $value;
-	}
-	
+    public function opt($option, $value)
+    {
+        $this->options[$option] = $value;
+    }
+    
     /**
      * Create the curl with the active options and execute it getting the response
      *
@@ -323,56 +324,56 @@
      *
      * @return void
      */
-	public function createCurl($verb,$url=null,$requestBody=null,$useProxy=false)
+    public function createCurl($verb,$url=null,$requestBody=null,$useProxy=false)
      {
         $this->__flush();
-     	$headers = array();
+         $headers = array();
 
-     	if($url != null){
-			$this->_url = $url;
+         if($url != null){
+            $this->_url = $url;
         }
-		if (!isset($this->s) || !is_resource($this->s)){
-			$this->s = curl_init();
-		}
-		
-		$this->_verb = (is_null($verb))?strtoupper($this->_verb):strtoupper($verb);
-		switch ($this->_verb)
-		{
-			case 'GET':
-				$this->setGet($requestBody);
-				break;
-			case 'POST':
-				$this->setPost ($requestBody);
-				break;
-			case 'PUT':
-				$fh = $this->setPut($requestBody);
-				break;
-			case 'DELETE':
-				$this->setDelete($requestBody);
-				break;
-			case 'VERIFY':
-				$fh = $this->setVerify($requestBody);
-				break;
-			default:
-				throw new InvalidArgumentException('Current verb (' . $this->_verb . ') is an invalid REST verb.');
-		}
-		
-		$this->opt(CURLOPT_URL				, $this->_url);
-		//$this->opt(CURLOPT_HTTPHEADER		, array('Accept: ' . $this->_acceptType));
-		$this->opt(CURLOPT_TIMEOUT			, $this->_timeout);
-		$this->opt(CURLOPT_RETURNTRANSFER	, true);
-		$this->opt(CURLOPT_MAXREDIRS		, $this->_maxRedirects);
-		$this->opt(CURLOPT_FOLLOWLOCATION	, $this->_followlocation);
-		$this->opt(CURLOPT_COOKIEJAR		, $this->_cookieFileLocation);
-		$this->opt(CURLOPT_COOKIEFILE		, $this->_cookieFileLocation);
-                $this->opt(CURLOPT_USERAGENT		, $this->_useragent);
-                $this->opt(CURLOPT_REFERER		, $this->_referer);
-                $this->opt(CURLOPT_POST			, $this->_post);
-                $this->opt(CURLOPT_HEADER		, $this->_includeHeader);
-  		$this->opt(CURLOPT_SSL_VERIFYPEER 	,  false);   
-  		
-		$this->setAuth();
-		
+        if (!isset($this->s) || !is_resource($this->s)){
+            $this->s = curl_init();
+        }
+        
+        $this->_verb = (is_null($verb))?strtoupper($this->_verb):strtoupper($verb);
+        switch ($this->_verb)
+        {
+            case 'GET':
+                $this->setGet($requestBody);
+                break;
+            case 'POST':
+                $this->setPost ($requestBody);
+                break;
+            case 'PUT':
+                $fh = $this->setPut($requestBody);
+                break;
+            case 'DELETE':
+                $this->setDelete($requestBody);
+                break;
+            case 'VERIFY':
+                $fh = $this->setVerify($requestBody);
+                break;
+            default:
+                throw new InvalidArgumentException('Current verb (' . $this->_verb . ') is an invalid REST verb.');
+        }
+        
+        $this->opt(CURLOPT_URL              , $this->_url);
+        //$this->opt(CURLOPT_HTTPHEADER     , array('Accept: ' . $this->_acceptType));
+        $this->opt(CURLOPT_TIMEOUT          , $this->_timeout);
+        $this->opt(CURLOPT_RETURNTRANSFER   , true);
+        $this->opt(CURLOPT_MAXREDIRS        , $this->_maxRedirects);
+        $this->opt(CURLOPT_FOLLOWLOCATION   , $this->_followlocation);
+        $this->opt(CURLOPT_COOKIEJAR        , $this->_cookieFileLocation);
+        $this->opt(CURLOPT_COOKIEFILE       , $this->_cookieFileLocation);
+        $this->opt(CURLOPT_USERAGENT        , $this->_useragent);
+        $this->opt(CURLOPT_REFERER          , $this->_referer);
+        $this->opt(CURLOPT_POST             , $this->_post);
+        $this->opt(CURLOPT_HEADER           , $this->_includeHeader);
+        $this->opt(CURLOPT_SSL_VERIFYPEER   , false);   
+          
+        $this->setAuth();
+        
          if($this->_post)
          {
              $this->opt(CURLOPT_POSTFIELDS, $this->_postFields);
@@ -380,50 +381,47 @@
          
          if($this->_noBody)
          {
-             $this->opt(CURLOPT_NOBODY		,true);
+             $this->opt(CURLOPT_NOBODY        ,true);
          }
          
          if ($useProxy && count($this->_proxy)>0)
          {
-			$t = rand(0, count($this->_proxy) - 1);
-			$proxies 	= explode(":",$this->_proxy[$t]);
-			$server 	= isset($proxies[0])?$proxies[0]:'';
-			$port 		= isset($proxies[1])?$proxies[1]:'80';
-         	//$this->opt(CURLOPT_HTTPPROXYTUNNEL, false);
-         	$this->opt(CURLOPT_PROXYTYPE, CURLPROXY_HTTP);
-         	$this->opt(CURLOPT_PROXY, $server);
-         	$this->opt(CURLOPT_PROXYPORT, $port);
+            $t = rand(0, count($this->_proxy) - 1);
+            $proxies     = explode(":",$this->_proxy[$t]);
+            $server     = isset($proxies[0])?$proxies[0]:'';
+            $port         = isset($proxies[1])?$proxies[1]:'80';
+             //$this->opt(CURLOPT_HTTPPROXYTUNNEL, false);
+             $this->opt(CURLOPT_PROXYTYPE, CURLPROXY_HTTP);
+             $this->opt(CURLOPT_PROXY, $server);
+             $this->opt(CURLOPT_PROXYPORT, $port);
          }
          
          if($this->_isAjax)
          {
-         	$headers[] = 'X-Requested-With: XMLHttpRequest';
-
-			$headers[] = 'Keep-Alive: 300';
-			$headers[] = 'Connection: Keep-Alive';
-			$headers[] = 'X-Requested-With: XMLHttpRequest';
-			$headers[] = 'X-Prototype-Version: 1.6.0.2';
-
-			$headers[] = 'Accept-Language: en-gb,en;q=0.5';
-			$headers[] = "Accept-Encoding: gzip,deflate";
-			$headers[] = "Accept: text/javascript, text/html, application/xml, text/xml, */*";
-			$headers[] = "Content-Type: application/x-www-form-urlencoded; charset=UTF-8";
-			$headers[] = 'Cookie: _smasher_session=3bcfb10c97b1043869c805dc92b7c6aa';
-
-	        $this->opt( CURLOPT_HTTPHEADERS	, $headers);
+            $headers[] = 'X-Requested-With: XMLHttpRequest';
+            $headers[] = 'Keep-Alive: 300';
+            $headers[] = 'Connection: Keep-Alive';
+            $headers[] = 'X-Requested-With: XMLHttpRequest';
+            $headers[] = 'X-Prototype-Version: 1.6.0.2';
+            $headers[] = 'Accept-Language: en-gb,en;q=0.5';
+            $headers[] = "Accept-Encoding: gzip,deflate";
+            $headers[] = "Accept: text/javascript, text/html, application/xml, text/xml, */*";
+            $headers[] = "Content-Type: application/x-www-form-urlencoded; charset=UTF-8";
+            $headers[] = 'Cookie: _smasher_session=3bcfb10c97b1043869c805dc92b7c6aa';
+            $this->opt( CURLOPT_HTTPHEADERS    , $headers);
          }
 
-	     curl_setopt_array($this->s, $this->options);
-	     
-         $this->_webpage = curl_exec($this->s);
-		 $this->_responseInfo = curl_getinfo($this->s);
-         $this->_status  = curl_getinfo($this->s,CURLINFO_HTTP_CODE);
-         $this->_respurl = curl_getinfo($this->s,CURLINFO_EFFECTIVE_URL);
-         $this->_err     = curl_errno( $this->s );
-         $this->_msg     = curl_error( $this->s );
-		
+         curl_setopt_array($this->s, $this->options);
+         
+         $this->_webpage        = curl_exec($this->s);
+         $this->_responseInfo   = curl_getinfo($this->s);
+         $this->_status         = curl_getinfo($this->s,CURLINFO_HTTP_CODE);
+         $this->_respurl        = curl_getinfo($this->s,CURLINFO_EFFECTIVE_URL);
+         $this->_err            = curl_errno( $this->s );
+         $this->_msg            = curl_error( $this->s );
+        
          if (isset($fh) && is_resource($fh)) {
-			fclose($fh);
+            fclose($fh);
          }
          $this->close();
      }
@@ -434,8 +432,8 @@
      * @return void
      */
      public function close(){
-		curl_close($this->s);
-	 }
+        curl_close($this->s);
+     }
 
     /**
      * Flush the curl object
@@ -443,15 +441,15 @@
      * @return void
      */
      private function __flush(){
-     	$this->options = array();	// reset options;
+         $this->options = array();    // reset options;
      }
-	 
-	 /**
+     
+     /**
      * Return the Http status received in the last execution of the curl
      *
      * @return int
      */
-	 public function getHttpStatus()
+     public function getHttpStatus()
      {
        return $this->_status;
      }
@@ -516,10 +514,10 @@
         if(method_exists($this, $methodName)) {
             $value = call_user_func(array($this, $methodName));
         } else {
-       		$property = '_'.$property;
-        	if (isset($this->$property)) {
-        		$value = $this->$property;
-        	}
+               $property = '_'.$property;
+            if (isset($this->$property)) {
+                $value = $this->$property;
+            }
         }
 
         return $value;
@@ -539,10 +537,10 @@
         if(method_exists($this, $methodName)) {
             call_user_func(array($this, $methodName), $value);
         } else {
-       		$property = '_'.$property;
-        	if (isset($this->$property)) {
-        		$this->$property = $value;
-        	}
+               $property = '_'.$property;
+            if (isset($this->$property)) {
+                $this->$property = $value;
+            }
         }
             
         return $this;
@@ -570,41 +568,41 @@
      *
      * @return string
      */
-	public function __toString(){
-		if($this->_webpage) {
-		return $this->_webpage;
-		} else {
-		return '';
-		}
-	}
+    public function __toString(){
+        if($this->_webpage) {
+            return $this->_webpage;
+        } else {
+            return '';
+        }
+    }
 
     /**
      * Display the page received in the last execution of the curl
      *
      * @return string
      */
-	public function  displayPage(){
-   		$content_type = isset($this->_responseInfo['content_type'])?$this->_responseInfo['content_type']:'text/html';
-		header('Content-type: ' .$content_type); 
-		if($this->_webpage) {
-			echo $this->_webpage;
-		} else {
-			echo '';
-		}
-	}
+    public function  displayPage(){
+           $content_type = isset($this->_responseInfo['content_type'])?$this->_responseInfo['content_type']:'text/html';
+        header('Content-type: ' .$content_type); 
+        if($this->_webpage) {
+            echo $this->_webpage;
+        } else {
+            echo '';
+        }
+    }
    
     /**
      * Close the curl object and delete the cookie file if exists
      *
      * @return void
      */
-	function __destruct() {
-      if (is_resource($this->s)) {
-        curl_close($this->s);
-      }
-      if (!$this->_cookiekeep && is_file($this->_cookieFileLocation)) {
-          unlink($this->_cookieFileLocation);
-      }
+    function __destruct() {
+        if (is_resource($this->s)) {
+            curl_close($this->s);
+        }
+        if (!$this->_cookiekeep && is_file($this->_cookieFileLocation)) {
+            unlink($this->_cookieFileLocation);
+        }
     }
    
 }
